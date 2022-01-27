@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+       <!-- font awesome  -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous" />
+    <link rel="stylesheet" href="static/css/AdminLTE.min.css" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+
+    <!-- custom styling -->
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+
+     <!-- <script src="static/js/jquery.min.js"></script> -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+
+    <title>Dynamically add or remove form input fields using jQuery - bootstrapfriendly</title>
+
+  </head>
+  <body >
+     
+
+
+<div class="container py-4">
+
+
+<div class="row">
+	<div class="col-md-12 bg-light p-2 mb-3">
+	<h4>Score Ranges and Tutor Student Weighting</h4>
+	</div>
+	<div class="col-md-3">
+	Minimum Score <input type="text" id="minScore" placeholder="Min" maxlength = "3" size="3" style="float:right"/>
+	</div>
+	<div class="col-md-3">
+	Maximum Score <input type="text" id="maxScore" placeholder="Min" maxlength = "3" size="3" style="float:right"/>
+	</div>
+	<div class="col-md-3">
+	Tutor Weighting<input type="text" id="studentWeight" placeholder="" maxlength = "3" size="3" style="float:right"/>
+	</div>
+	<div class="col-md-3">
+	Student Weighting <input type="text" id="tutorWeight" placeholder="" maxlength = "3" size="3" style="float:right"/>
+	</div>
+</div>
+
+<div class="row"><hr/></div>
+
+<div class="row">
+	<div class="col-md-12 bg-light p-2 mb-3">
+	<h4>Inter-Rater Reliability</h4>
+	</div>
+	<div class="col-md-12">
+	
+	<div id="col-md-12 radioContainer" name="radioContainer" class="radioContainer">
+
+                <div class="floatBlock">
+                    <label for="identity"> <input id="identity" name="identity" type="radio" value="identity" />  identity </label>
+                </div>
+				<div class="floatBlock">
+                    <label for="radical"> <input id="radical" name="radical" type="radio" value="radical" />  radical </label>
+                </div>
+				<div class="floatBlock">
+                    <label for="linear"> <input id="linear" name="linear" type="radio" value="linear" />  linear </label>
+                </div>
+				<div class="floatBlock">
+                    <label for="ordinal"> <input id="ordinal" name="ordinal" type="radio" value="ordinal" />  ordinal </label>
+                </div>
+				<div class="floatBlock">
+                    <label for="quadratic"> <input id="quadratic" name="quadratic" type="radio" value="quadratic" />  quadratic </label>
+                </div>
+				<div class="floatBlock">
+                    <label for="circular"> <input id="circular" name="circular" type="radio" value="circular" />  circular </label>
+                </div>
+				<div class="floatBlock">
+                    <label for="bipolar"> <input id="bipolar" name="bipolar" type="radio" value="bipolar" />  bipolar </label>
+                </div>
+
+                
+
+            </div>
+	
+	</div>
+</div>
+
+
+ <div class="row">
+      <div class="col-md-12 form_sec_outer_task border ">
+        <div class="row">
+          <div class="col-md-12 bg-light p-2 mb-3">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="row">
+                  <div class="col-md-6" >
+                    <h4 class="frm_section_n">Criteria</h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label>Criterion 1</label>
+          </div>
+          <div class="col-md-4">
+            <label> Weighting </label>
+          </div>
+        </div>
+		<div class="col-md-12 p-0">
+		
+		
+		
+        <div class="col-md-12 p-0">
+          <div class="col-md-12 form_field_outer p-0">
+            <div class="row form_field_outer_row">
+              <div class="form-group col-md-6">
+                <input type="text" class="form-control w_90" name="crit_no_1" id="crit_no_1" placeholder="Enter Criterion" />
+              </div>
+			  <div class="form-group col-md-1">
+                %
+              </div>
+              <div class="form-group col-md-3">
+                <input name="no_type[]" id="no_type_${index}" class="form-control" type="range"/ >
+              </div>
+              <div class="form-group col-md-2 add_del_btn_outer">
+                <button class="btn_round add_node_btn_frm_field" title="Copy or clone this row">
+                  <i class="fas fa-copy"></i>
+                </button>
+
+                <button class="btn_round remove_node_btn_frm_field" disabled>
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </div>
+			  
+			  <div class="form-group col-md-12">
+			<textarea name="att_desc_1" id="att_desc_1" class="form-control">
+			Add attainment descriptors
+			</textarea>
+			</div>
+			
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row ml-0 bg-light mt-3 border py-3">
+        <div class="col-md-12">
+          <button class="btn btn-outline-lite py-0 add_new_frm_field_btn"><i class="fas fa-plus add_icon"></i> Add New field row</button>
+        </div>
+      </div>
+ </div>
+</div>
+
+
+
+<script type="text/javascript">
+
+
+function makeClone(index)
+		{
+		return `
+          <div class="row form_field_outer_row">
+			
+			<div class="form-group col-md-6">Criterion ${index}</div>
+			<div class="form-group col-md-6">Weighting</div>
+			
+			
+              <div class="form-group col-md-6">
+                <input type="text" class="form-control w_90" name="crit_no_${index}" id="crit_no_${index}" placeholder="Enter Criterion" />
+              </div>
+              <div class="form-group col-md-1">
+                %
+              </div>
+              <div class="form-group col-md-3" style="text-align:right">
+			  
+                <input name="no_type[]" id="no_type_${index}" class="form-control" type="range"  style="float:left;width:80%" oninput="this.nextElementSibling.value = this.value"/ >
+				<output style="float:left;margin:10px">50</output>
+				</div>
+              
+              <div class="form-group col-md-2 add_del_btn_outer" style="clear:both;">
+                <button class="btn_round add_node_btn_frm_field" title="Copy or clone this row">
+                  <i class="fas fa-copy"></i>
+                </button>
+
+                <button class="btn_round remove_node_btn_frm_field" disabled>
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </div>
+            </div>
+			<div class="row">
+			
+			<div class="form-group col-md-12">
+			<textarea name="att_desc_${index}" id="att_desc_${index}" class="form-control">
+			Add attainment descriptors
+			</textarea>
+			</div>
+			</div>
+        `;
+		}
+
+
+
+$(document).ready(function(){
+    $("body").on("click",".add_new_frm_field_btn", function (){ 
+      console.log("clicked");
+      var index = $(".form_field_outer").find(".form_field_outer_row").length + 1;
+      $(".form_field_outer").append(makeClone(index));
+
+      $(".form_field_outer").find(".remove_node_btn_frm_field:not(:first)").prop("disabled", false);
+      $(".form_field_outer").find(".remove_node_btn_frm_field").first().prop("disabled", true);
+    });
+ });
+
+
+    ///======Clone method
+$(document).ready(function(){
+    $("body").on("click", ".add_node_btn_frm_field", function (e) {
+      var index = $(e.target).closest(".form_field_outer").find(".form_field_outer_row").length + 1;
+      var cloned_el = $(e.target).closest(".form_field_outer_row").clone(true);
+
+      $(e.target).closest(".form_field_outer").last().append(cloned_el).find(".remove_node_btn_frm_field:not(:first)").prop("disabled", false);
+
+      $(e.target).closest(".form_field_outer").find(".remove_node_btn_frm_field").first().prop("disabled", true);
+
+    
+      //change id
+      $(e.target).closest(".form_field_outer").find(".form_field_outer_row").last().find("input[type='text']").attr("id", "crit_no_"+index);
+
+      $(e.target).closest(".form_field_outer").find(".form_field_outer_row").last().find("select").attr("id", "no_type_"+index);
+
+      console.log(cloned_el);
+      //count++;
+    });
+ });
+
+
+$(document).ready(function(){
+    //===== delete the form fieed row
+    $("body").on("click", ".remove_node_btn_frm_field", function () {
+      $(this).closest(".form_field_outer_row").remove();
+      console.log("success");
+    });
+  });
+
+
+
+</script>
+    
+
+   
+  </body>
+</html>
