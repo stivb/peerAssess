@@ -1,6 +1,7 @@
 source("peerFuncs.r")
 library(readxl)
 library(readr)
+library(xtable)
 
 #############BODY###########################
 
@@ -141,10 +142,16 @@ oSheetIRRAnalytics<-data.table::rbindlist(workSheetList)
 
 print("Completed")
 
+
+
+
 #View(oSheetMarksHandout)
 ##View(oSheetStudentMarkingAudit)
 #View(oSheetIRRAnalytics)
 #View(oSheetIRRCorr)
+
+mks <- xtable(oSheetMarksHandout)
+print(mks,type="html")
 
 # 
 # View(q)
