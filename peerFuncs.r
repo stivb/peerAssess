@@ -16,7 +16,7 @@ library(dplyr)
 library(tibble)
 library(irr)
 library(ltm)
-
+library(GGally)
 
 
 tutorStudentSplitSheet<-function(df)
@@ -224,6 +224,15 @@ doHist<-function(sheetDF,fn, graphsToPlot, putativePath)
   
 }
 
+doCGram<-function(sheetDf,fn,putativePath)
+{
+  pngName<-paste(putativePath, "/", fn,"cgram.png",sep="")
+  png(pngName)
+  ggcorr(data = NULL, cor_matrix = cor(sheetDf, use = "pairwise.complete.obs"),
+         nbreaks = 6, palette = "Spectral")
+  dev.off()
+}
+
 
 doMarkerStack<-function(sheetDF,fn, graphsToPlot,putativePath)
 {
@@ -264,6 +273,17 @@ my.cols <- function(maxVal) {
   naCol<-as.numeric(maxVal)+1
   coul[naCol]<-"white"
   return (coul)
+}
+
+doPlot<-function(tutorAveScores, studentAveScores, fn, putativePath)
+{
+  tutorAveScores<-as.numeric(tutorAveScores)
+  reg_model <- lm(studentAveScores ~ tutorAveScores)
+  pngName<-paste(putativePath, "/", fn,"_plot.png",sep="")
+  png(pngName)
+  plot(tutorAveScores,studentAveScores)
+  abline(reg_model, col="steelblue")
+  dev.off()
 }
 
 doHeatMap<-function(sheetDF,fn, graphsToPlot,putativePath)

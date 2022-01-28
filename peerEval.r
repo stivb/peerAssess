@@ -56,6 +56,11 @@ lapply(mysheets, function(df) {
   
   topLeftStr<-paste(as.character(df[1,1]))
   numcols<-ncol(df)
+  
+  tabName<-tab_names[[length(workSheetList)+1]]
+  putativePath = paste(excelPath,tabName,sep="/")
+  ifelse(!dir.exists(putativePath), dir.create(putativePath), "Folder exists already")
+  
   if (str_detect(topLeftStr,regex("[^\\W][0-9]")))
   {
 
@@ -74,7 +79,9 @@ lapply(mysheets, function(df) {
     oSheetTSComparisonAnalytics<-doTSAnalytics(studentAveScores,tutorAveScores,nCriteria)
     oSheetMarksHandout<<-makeGradeSheet(studentAveScores,tutorAveScores,2,criteriaProprotions,tutorStudentProportions)
     
-    plot(studentAveScores,as.numeric(tutorAveScores))
+    
+    
+    doPlot(as.numeric(tutorAveScores), studentAveScores,tabName, putativePath)
     tMean<-mean(tutorAveScores, na.rm=TRUE)
     tSd<-sd(tutorAveScores, na.rm=TRUE)
     
@@ -98,7 +105,6 @@ lapply(mysheets, function(df) {
   
   
   tmpWorkSheetList <- list()
-  tabName<-tab_names[[length(workSheetList)+1]]
   tmpWorkSheetList[["fn"]]<-tabName
   
   tmpDf <- cbind(df)
@@ -111,14 +117,11 @@ lapply(mysheets, function(df) {
   tmpWorkSheetList<-getCustomMeasures(df,maxScore,minScore,tmpWorkSheetList)
   tmpWorkSheetList<-addMarkCounts(unlist(df), tmpWorkSheetList, 1, 5)
   
-  putativePath = paste(excelPath,tabName,sep="/")
-  ifelse(!dir.exists(putativePath), dir.create(putativePath), "Folder exists already")
-  
-  
   
   doHist(df, tabName, graphsToPlot,putativePath)
   doMarkerStack(df,tabName, graphsToPlot,putativePath)
   doHeatMap(df,tabName, graphsToPlot,putativePath)
+  doCGram(df, tabName,putativePath)
   
   #tmpWorkSheetList[["iccNA"]]<-doICCNA(irrDf)
   #print("iccNa")
@@ -138,10 +141,10 @@ oSheetIRRAnalytics<-data.table::rbindlist(workSheetList)
 
 print("Completed")
 
-View(oSheetMarksHandout)
-View(oSheetStudentMarkingAudit)
-View(oSheetIRRAnalytics)
-View(oSheetIRRCorr)
+#View(oSheetMarksHandout)
+##View(oSheetStudentMarkingAudit)
+#View(oSheetIRRAnalytics)
+#View(oSheetIRRCorr)
 
 # 
 # View(q)
