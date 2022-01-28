@@ -150,9 +150,15 @@ print("Completed")
 #View(oSheetIRRAnalytics)
 #View(oSheetIRRCorr)
 
-outputSheets<-list(oSheetMarksHandout,oSheetStudentMarkingAudit,oSheetIRRAnalytics)
+#outputSheets<-list(oSheetMarksHandout,oSheetStudentMarkingAudit,oSheetIRRAnalytics)
 
-htmlOutput<-doHtmlTables(outputSheets)
+outputSheets<-list()
+outputSheets[[ "oSheetMarksHandout" ]] <- oSheetMarksHandout
+outputSheets[[ "oSheetStudentMarkingAudit" ]] <- oSheetStudentMarkingAudit
+outputSheets[[ "oSheetIRRAnalytics" ]] <- oSheetIRRAnalytics
+
+
+doTables(outputSheets)
 
 mks <- xtable(oSheetMarksHandout)
 print(mks,type="html")

@@ -113,15 +113,15 @@ getAgreements<-function(tIrrDf,weightsToUse,resultList)
   return(resultList)
 }
 
-doHtmlTables<-function(tableList)
+doTables<-function(tableList,fn,putativePath,tblType)
 {
-  retval<-""
+  csvPath<-paste(putativePath, "/", fn,tblType,".csv",sep="")
+  htmlPath<-paste(putativePath, "/", fn,tblType,".htm",sep="")
   lapply(tableList,function(tbl)
     {
-    htmlTable<-capture.output(print(xtable(tbl),type="html"))
-    retval<<-paste(retval,htmlTable,sep="<hr/>")
+    write.csv(tbl,csvPath)
+    print.xtable(tbl, type="html", file=htmlPath)
   })
-  return (retval)
 }
 
 getCustomMeasures<-function(df,maxx,minn,resultList)
