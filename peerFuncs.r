@@ -270,7 +270,7 @@ doHeatMap<-function(sheetDF,fn, graphsToPlot,putativePath)
 {
   if (!('doHeatMaps' %in% graphsToPlot)) return(NULL);
   pngName<-paste(putativePath, "/", fn,"_heat.png",sep="")
-  names(sheetDF) <- gsub("...", "", names(sheetDF))
+  names(sheetDF) <- gsub('\\.\\.\\.', "", names(sheetDF))
   coul <- brewer.pal(6, "Set1")
   coul[6]="white"
   dt2 <- sheetDF %>%
@@ -290,7 +290,12 @@ doHeatMap<-function(sheetDF,fn, graphsToPlot,putativePath)
                   y = rowname, 
                   fill = value)) +
     xlab("Marks") + ylab("Students") + 
-    geom_tile()  + scale_fill_manual(values=my.cols(dt2Max))
+    theme_light(base_size = 9) + 
+    theme(axis.text.x = element_text(angle = -45, hjust=1)) + 
+    geom_tile()  + 
+    #scale_fill_manual(values=my.cols(dt2Max))
+    scale_fill_manual(breaks = levels(dt2$value),
+     values = coul)
   ggsave(pngName)
 }
 
