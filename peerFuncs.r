@@ -79,9 +79,9 @@ makeGradeSheet<-function(vAveStudentScores,vAveTutorScores,nCriteria,critProport
     
     
     studentFactored<-vAveStudentScores[i:artefactEnd]*critProportions
-    tmpGradeSheetList[["factoredStudent"]]<-paste(unlist(studentFactored,use.names=FALSE),sep=" ")
+    #tmpGradeSheetList[["factoredStudent"]]<-paste(unlist(studentFactored,use.names=FALSE),sep=" ")
     tutorFactored<-vAveTutorScores[i:artefactEnd]*critProportions
-    tmpGradeSheetList[["factoredTutor"]]<-paste(tutorFactored,sep=" ")
+    #tmpGradeSheetList[["factoredTutor"]]<-paste(tutorFactored,sep=" ")
     sSum<-sum(unlist(studentFactored,use.names=FALSE))
     tmpGradeSheetList[["sSum"]]<-sSum
     tSum<-sum(unlist(tutorFactored))
@@ -111,6 +111,17 @@ getAgreements<-function(tIrrDf,weightsToUse,resultList)
   resultList[["kendall"]]<-doKendall(tIrrDf)
   resultList[["cronbach"]]<-doCronbach(tIrrDf)
   return(resultList)
+}
+
+doHtmlTables<-function(tableList)
+{
+  retval<-""
+  lapply(tableList,function(tbl)
+    {
+    htmlTable<-capture.output(print(xtable(tbl),type="html"))
+    retval<<-paste(retval,htmlTable,sep="<hr/>")
+  })
+  return (retval)
 }
 
 getCustomMeasures<-function(df,maxx,minn,resultList)

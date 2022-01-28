@@ -122,7 +122,7 @@ lapply(mysheets, function(df) {
   doHist(df, tabName, graphsToPlot,putativePath)
   doMarkerStack(df,tabName, graphsToPlot,putativePath)
   doHeatMap(df,tabName, graphsToPlot,putativePath)
-  doCGram(df, tabName,putativePath)
+  #doCGram(df, tabName,putativePath)
   
   #tmpWorkSheetList[["iccNA"]]<-doICCNA(irrDf)
   #print("iccNa")
@@ -149,6 +149,10 @@ print("Completed")
 ##View(oSheetStudentMarkingAudit)
 #View(oSheetIRRAnalytics)
 #View(oSheetIRRCorr)
+
+outputSheets<-list(oSheetMarksHandout,oSheetStudentMarkingAudit,oSheetIRRAnalytics)
+
+htmlOutput<-doHtmlTables(outputSheets)
 
 mks <- xtable(oSheetMarksHandout)
 print(mks,type="html")
