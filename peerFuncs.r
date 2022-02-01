@@ -244,6 +244,12 @@ doCGram<-function(sheetDf,fn,putativePath)
   dev.off()
 }
 
+doEvtIrrCsv<function(myList,fn,putativePath)
+  {
+  csvName<-paste(putativePath, "/", fn,"irr.csv",sep="")
+  capture.output(myList, file = csvName) 
+}
+
 
 doMarkerStack<-function(sheetDF,fn, graphsToPlot,putativePath)
 {

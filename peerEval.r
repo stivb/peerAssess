@@ -44,10 +44,10 @@ gradeSheetList<-list()
 
 ##################output sheets###########################################
 
-oSheetMarksHandout<-data.frame()  #single Event
-oSheetStudentMarkingAudit<-data.frame()  #single Event
-oSheetIRRAnalytics<-data.frame()  #multiple events
-oSheetIRRCorr<-data.frame() #multiple events
+oSheetMarksHandout<-data.frame()  #single Event (marks given to groups)
+oSheetStudentMarkingAudit<-data.frame()  #single Event (checks marker probity/competence)
+oSheetIRRAnalytics<-data.frame()  #multiple events (irr for multiple marking events)
+oSheetIRRCorr<-data.frame() #multiple events (the above with correlations between all the measures)
 oSheetTSComparisonAnalytics<-data.frame() #single Event
 
 #############################################################
@@ -76,7 +76,7 @@ lapply(mysheets, function(df) {
     else tutorAveScores<-colMeans(as.data.frame(sapply(dfTutors,as.numeric)),na.rm=TRUE)
     
     
-    
+    #am thinking the tscomparison analytics is canonical rather than event
     oSheetTSComparisonAnalytics<-doTSAnalytics(studentAveScores,tutorAveScores,nCriteria)
     oSheetMarksHandout<<-makeGradeSheet(studentAveScores,tutorAveScores,2,criteriaProprotions,tutorStudentProportions)
     
@@ -127,6 +127,8 @@ lapply(mysheets, function(df) {
   #tmpWorkSheetList[["iccNA"]]<-doICCNA(irrDf)
   #print("iccNa")
   #print(tmpWorkSheetList[["iccNA"]])
+  
+  doEvtIrrCsv(tmpWorkSheetList,tabName,putativePath)
   
 
   workSheetList[[length(workSheetList)+1]] <<- tmpWorkSheetList
