@@ -17,6 +17,7 @@ library(tibble)
 library(irr)
 library(ltm)
 library(GGally)
+library(reshape2)
 
 
 tutorStudentSplitSheet<-function(df)
@@ -301,6 +302,16 @@ doPlot<-function(tutorAveScores, studentAveScores, fn, putativePath)
   plot(tutorAveScores,studentAveScores)
   abline(reg_model, col="steelblue")
   dev.off()
+}
+
+doCriterionViolins<-function(sheetDF,fn, graphsToPlot,putativePath)
+{
+  pngName<-paste(putativePath, "/", fn,"_viol.png",sep="")
+  x<-melt(sheetDF)
+  plt<-ggplot(data=x,aes(x=variable,y=value))
+  plt+geom_violin()+ theme_minimal() + labs(x="Criteria",y="x")
+  ggsave(pngName)
+  
 }
 
 doHeatMap<-function(sheetDF,fn, graphsToPlot,putativePath)
