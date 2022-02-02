@@ -122,7 +122,7 @@ lapply(mysheets, function(df) {
   doHist(df, tabName, graphsToPlot,putativePath)
   doMarkerStack(df,tabName, graphsToPlot,putativePath)
   doHeatMap(df,tabName, graphsToPlot,putativePath)
-  doViolins(df,tabName, graphsToPlot,putativePath)
+  doCriterionViolins(df,tabName, graphsToPlot,putativePath)
   #doCGram(df, tabName,putativePath)
   
   #tmpWorkSheetList[["iccNA"]]<-doICCNA(irrDf)

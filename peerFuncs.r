@@ -245,11 +245,19 @@ doCGram<-function(sheetDf,fn,putativePath)
   dev.off()
 }
 
-doEvtIrrCsv<function(myList,fn,putativePath)
+doEvtIrrCsv<-function(lst,fn,putativePath)
   {
+  myList<-lst
   csvName<-paste(putativePath, "/", fn,"irr.csv",sep="")
-  capture.output(myList, file = csvName) 
+  headings<-paste(names(myList),collapse=",")
+  values<-paste(unlist(unname(myList)),collapse=",")
+  #txtOut<-paste(headings,values,sep="\n")
+  fileConn<-file(csvName)
+  writeLines(c(headings,values), fileConn)
+  close( fileConn )
 }
+
+
 
 
 doMarkerStack<-function(sheetDF,fn, graphsToPlot,putativePath)
