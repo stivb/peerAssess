@@ -43,12 +43,20 @@ gradeSheetList<-list()
 
 
 ##################output sheets###########################################
+#concept: 
+# a "report" is for a single event, 
+# "analytics" is over multiple events
 
-oSheetMarksHandout<-data.frame()  #single Event (marks given to groups)
-oSheetStudentMarkingAudit<-data.frame()  #single Event (checks marker probity/competence)
-oSheetIRRAnalytics<-data.frame()  #multiple events (irr for multiple marking events)
-oSheetIRRCorr<-data.frame() #multiple events (the above with correlations between all the measures)
-oSheetTSComparisonAnalytics<-data.frame() #single Event
+tblMarksReport<-data.frame()  #single Event (marks given to groups)
+tblMarkingAuditReport<-data.frame()  #single Event (checks marker probity/competence)
+tblTutorStudentCorrReport<-data.frame() #single Event
+
+
+tblIRRAnalytics<-data.frame()  #multiple events (irr for multiple marking events)
+tblIRRCorrAnalytics<-data.frame() #multiple events (the above with correlations between all the measures)
+tblTutorStudentCorrAnalytics<-data.frame() 
+
+destStem<-""
 
 #############################################################
 
@@ -61,6 +69,8 @@ lapply(mysheets, function(df) {
   tabName<-tab_names[[length(workSheetList)+1]]
   putativePath = paste(excelPath,tabName,sep="/")
   ifelse(!dir.exists(putativePath), dir.create(putativePath), "Folder exists already")
+  
+  destStem<<-paste(putativePath, "/", tabName,sep="")
   
   if (str_detect(topLeftStr,regex("[^\\W][0-9]")))
   {
@@ -77,12 +87,13 @@ lapply(mysheets, function(df) {
     
     
     #am thinking the tscomparison analytics is canonical rather than event
-    oSheetTSComparisonAnalytics<-doTSAnalytics(studentAveScores,tutorAveScores,nCriteria)
-    oSheetMarksHandout<<-makeGradeSheet(studentAveScores,tutorAveScores,2,criteriaProprotions,tutorStudentProportions)
+    tblTutorStudentCorrReport<-doTSCorrReport(studentAveScores,tutorAveScores,nCriteria)
+    
+    tblMarksReport<<-makeGradeSheet(studentAveScores,tutorAveScores,2,criteriaProprotions,tutorStudentProportions)
     
     
     
-    doPlot(as.numeric(tutorAveScores), studentAveScores,tabName, putativePath)
+    doPlot(as.numeric(tutorAveScores), studentAveScores,destStem)
     tMean<-mean(tutorAveScores, na.rm=TRUE)
     tSd<-sd(tutorAveScores, na.rm=TRUE)
     
@@ -98,7 +109,7 @@ lapply(mysheets, function(df) {
                                tutorAveScores, minScore,maxScore)
     }
     
-    oSheetStudentMarkingAudit<<-as.data.frame(do.call(rbind, markerAuditList))
+    tblMarkingAuditReport<<-as.data.frame(do.call(rbind, markerAuditList))
 
     df<-dfStudents
     }
@@ -119,51 +130,48 @@ lapply(mysheets, function(df) {
   tmpWorkSheetList<-addMarkCounts(unlist(df), tmpWorkSheetList, 1, 5)
   
   
-  doHist(df, tabName, graphsToPlot,putativePath)
-  doMarkerStack(df,tabName, graphsToPlot,putativePath)
-  doHeatMap(df,tabName, graphsToPlot,putativePath)
-  doCriterionViolins(df,tabName, graphsToPlot,putativePath)
-  #doCGram(df, tabName,putativePath)
+  doHist(df, graphsToPlot,destStem)
+  doMarkerStack(df, graphsToPlot,destStem)
+  doHeatMap(df,graphsToPlot,destStem)
+  doCriterionViolins(df,graphsToPlot,destStem)
+  
+  
+  #doCGram(df, destStem)
   
   #tmpWorkSheetList[["iccNA"]]<-doICCNA(irrDf)
   #print("iccNa")
   #print(tmpWorkSheetList[["iccNA"]])
   
-  doEvtIrrCsv(tmpWorkSheetList,tabName,putativePath)
-  
-
+  doEvtIrrCsv(tmpWorkSheetList,destStem)
   workSheetList[[length(workSheetList)+1]] <<- tmpWorkSheetList
   
 })
 
 
-
-
-
 do.call("rbind", workSheetList)
-oSheetIRRAnalytics<-data.table::rbindlist(workSheetList)
+tblIRRAnalytics<-data.table::rbindlist(workSheetList)
 
 print("Completed")
 
 
 
 
-#View(oSheetMarksHandout)
-##View(oSheetStudentMarkingAudit)
-#View(oSheetIRRAnalytics)
-#View(oSheetIRRCorr)
+#View(tblMarksReport)
+##View(tblMarkingAuditReport)
+#View(tblIRRAnalytics)
+#View(tblIRRCorrAnalytics)
 
-#outputSheets<-list(oSheetMarksHandout,oSheetStudentMarkingAudit,oSheetIRRAnalytics)
+#outputSheets<-list(tblMarksReport,tblMarkingAuditReport,tblIRRAnalytics)
 
 outputSheets<-list()
-outputSheets[[ "oSheetMarksHandout" ]] <- oSheetMarksHandout
-outputSheets[[ "oSheetStudentMarkingAudit" ]] <- oSheetStudentMarkingAudit
-outputSheets[[ "oSheetIRRAnalytics" ]] <- oSheetIRRAnalytics
+outputSheets[[ "tblMarksReport" ]] <- tblMarksReport
+outputSheets[[ "tblMarkingAuditReport" ]] <- tblMarkingAuditReport
+outputSheets[[ "tblIRRAnalytics" ]] <- tblIRRAnalytics
 
 
-doTables(outputSheets)
+doTables(outputSheets,excelPath)
 
-mks <- xtable(oSheetMarksHandout)
+mks <- xtable(tblMarksReport)
 print(mks,type="html")
 
 # 

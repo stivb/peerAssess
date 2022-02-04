@@ -114,15 +114,16 @@ getAgreements<-function(tIrrDf,weightsToUse,resultList)
   return(resultList)
 }
 
-doTables<-function(tableList,fn,putativePath,tblType)
+doTables<-function(tableList,dStem)
 {
-  csvPath<-paste(putativePath, "/", fn,tblType,".csv",sep="")
-  htmlPath<-paste(putativePath, "/", fn,tblType,".htm",sep="")
-  lapply(tableList,function(tbl)
-    {
+  for (name in names(tableList)) {
+    csvPath<-paste(dStem,"/",name,".csv",sep="")
+    htmlPath<-paste(dStem,"/",name,".htm",sep="")
+    tbl<-tableList[[name]]
     write.csv(tbl,csvPath)
     print.xtable(tbl, type="html", file=htmlPath)
-  })
+  }
+
 }
 
 getCustomMeasures<-function(df,maxx,minn,resultList)
@@ -141,7 +142,7 @@ getCustomMeasures<-function(df,maxx,minn,resultList)
 }
 
 
-doTSAnalytics<-function(vAveStudentScores,vAveTutorScores,nCriteria)
+doTSCorrReport<-function(vAveStudentScores,vAveTutorScores,nCriteria)
 {
   if (length(vAveStudentScores)!=length(vAveTutorScores)) return (NULL);
   if (length(vAveStudentScores) %% nCriteria!=0) return (NULL);
@@ -213,12 +214,12 @@ addMarkCounts<-function(rawMarks,resultsList,from,to)
 
 
 
-doHist<-function(sheetDF,fn, graphsToPlot, putativePath)
+doHist<-function(sheetDF,graphsToPlot,dStem)
 {
   if (!('doHists' %in% graphsToPlot))return(NULL);
   
-  
-  pngName<-paste(putativePath, "/", fn,".png",sep="")
+  fn<-basename(dStem)
+  pngName<-paste(dStem,".png",sep="")
   varz=unlist(strsplit("abcdefghijklmnopqrstuvwxyz", split = ""))
   names(sheetDF)[1:ncol(sheetDF)]<- varz[1:ncol(sheetDF)]
   oDf<-gather(sheetDF)
@@ -236,19 +237,19 @@ doHist<-function(sheetDF,fn, graphsToPlot, putativePath)
   
 }
 
-doCGram<-function(sheetDf,fn,putativePath)
+doCGram<-function(sheetDf,dStem)
 {
-  pngName<-paste(putativePath, "/", fn,"cgram.png",sep="")
+  pngName<-paste(dStem,"cgram.png",sep="")
   png(pngName)
   ggcorr(data = NULL, cor_matrix = cor(sheetDf, use = "pairwise.complete.obs"),
          nbreaks = 6, palette = "Spectral")
   dev.off()
 }
 
-doEvtIrrCsv<-function(lst,fn,putativePath)
+doEvtIrrCsv<-function(lst,dStem)
   {
   myList<-lst
-  csvName<-paste(putativePath, "/", fn,"irr.csv",sep="")
+  csvName<-paste(dStem,"irr.csv",sep="")
   headings<-paste(names(myList),collapse=",")
   values<-paste(unlist(unname(myList)),collapse=",")
   fileConn<-file(csvName)
@@ -259,10 +260,11 @@ doEvtIrrCsv<-function(lst,fn,putativePath)
 
 
 
-doMarkerStack<-function(sheetDF,fn, graphsToPlot,putativePath)
+doMarkerStack<-function(sheetDF,graphsToPlot,dStem)
 {
   if (!('doMarkerStacks' %in% graphsToPlot)) return(NULL);
-  pngName<-paste(putativePath, "/", fn,"stack.png",sep="")
+  fn<-basename(dStem)
+  pngName<-paste(dStem,"stack.png",sep="")
   allVals<-as.numeric(unlist(sheetDF))
   maxVal<-max(allVals, na.rm=TRUE)
   freq <- apply(sheetDF, 1, function(x) table(factor(x, levels = c(1:maxVal),  ordered = TRUE)))
@@ -300,31 +302,32 @@ my.cols <- function(maxVal) {
   return (coul)
 }
 
-doPlot<-function(tutorAveScores, studentAveScores, fn, putativePath)
+doPlot<-function(tutorAveScores, studentAveScores, dStem)
 {
   tutorAveScores<-as.numeric(tutorAveScores)
   reg_model <- lm(studentAveScores ~ tutorAveScores)
-  pngName<-paste(putativePath, "/", fn,"_plot.png",sep="")
+  pngName<-paste(dStem,"_plot.png",sep="")
   png(pngName)
   plot(tutorAveScores,studentAveScores)
   abline(reg_model, col="steelblue")
   dev.off()
 }
 
-doCriterionViolins<-function(sheetDF,fn, graphsToPlot,putativePath)
+doCriterionViolins<-function(sheetDF,graphsToPlot,dStem)
 {
-  pngName<-paste(putativePath, "/", fn,"_viol.png",sep="")
-  x<-melt(sheetDF)
+  pngName<-paste(dStem,"_viol.png",sep="")
+  x<-melt(sheetDF,measure.vars=names(sheetDF))
+  x$value<-as.numeric(x$value)
   plt<-ggplot(data=x,aes(x=variable,y=value))
   plt+geom_violin()+ theme_minimal() + labs(x="Criteria",y="x")
   ggsave(pngName)
   
 }
 
-doHeatMap<-function(sheetDF,fn, graphsToPlot,putativePath)
+doHeatMap<-function(sheetDF,graphsToPlot,dStem)
 {
   if (!('doHeatMaps' %in% graphsToPlot)) return(NULL);
-  pngName<-paste(putativePath, "/", fn,"_heat.png",sep="")
+  pngName<-paste(dStem,"_heat.png",sep="")
   names(sheetDF) <- gsub('\\.\\.\\.', "", names(sheetDF))
   coul <- brewer.pal(6, "Set1")
   coul[6]="white"
@@ -356,10 +359,11 @@ doHeatMap<-function(sheetDF,fn, graphsToPlot,putativePath)
 
 #x = reorder(x, sort(as.numeric(x)))
 
-doStack<-function(sheetDF,fn, graphsToPlot,putativePath)
+doStack<-function(sheetDF,graphsToPlot,dStem)
 {
   if (!('doStacks' %in% graphsToPlot))  return(NULL);
-  pngName<-paste(putativePath, "/", fn,"__stack.png",sep="")
+  fn<-basename(dStem)
+  pngName<-paste(dStem,"__stack.png",sep="")
   varz=unlist(strsplit("abcdefghijklmnopqrstuvwxyz", split = ""))
   names(sheetDF)[1:ncol(sheetDF)]<- varz[1:ncol(sheetDF)]
   freq <- sapply(sheetDF, function(x) table(factor(x, levels = c(1,2,3,4,5),  ordered = TRUE)))
