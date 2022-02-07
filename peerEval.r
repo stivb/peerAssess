@@ -12,7 +12,7 @@ doTables<-function(tableList,dStem)
     tbl<-tableList[[name]]
     tblDf<-apply(tbl,2,as.character)
     write.csv(tblDf,csvPath)
-    #print.xtable(tblDf, type="html", file=htmlPath)
+    print(xtable(tbl), type = "html",file=htmlPath)
   }
   
 }
