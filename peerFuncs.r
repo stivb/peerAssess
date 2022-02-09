@@ -114,17 +114,7 @@ getAgreements<-function(tIrrDf,weightsToUse,resultList)
   return(resultList)
 }
 
-doTables<-function(tableList,dStem)
-{
-  for (name in names(tableList)) {
-    csvPath<-paste(dStem,"/",name,".csv",sep="")
-    htmlPath<-paste(dStem,"/",name,".htm",sep="")
-    tbl<-tableList[[name]]
-    write.csv(tbl,csvPath)
-    print.xtable(tbl, type="html", file=htmlPath)
-  }
 
-}
 
 getCustomMeasures<-function(df,maxx,minn,resultList)
 {
