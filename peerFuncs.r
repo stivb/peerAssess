@@ -230,20 +230,27 @@ doHist<-function(sheetDF,graphsToPlot,dStem)
 
 doCGram<-function(sheetDf,dStem)
 {
-  pngName<-paste(dStem,"cgram.png",sep="")
-  png(pngName)
-  # ggcorr(data = NULL, 
-  #        cor_matrix = cor(t(data.matrix(sheetDf)), 
-  #                     use = "pairwise.complete.obs"),
-  #                     method = "circle",
-  #                     nbreaks = 6, 
-  #                     palette = "Spectral")
-  # 
+  pngName1<-paste(dStem,"cgram1.png",sep="")
   
   studentCorrMatrix<-cor(t(data.matrix(sheetDf)), 
                          use = "pairwise.complete.obs")
-  ggcorrplot(studentCorrMatrix, method = "circle")
-  dev.off()
+  
+  
+  ggcorr(data = NULL,
+         cor_matrix = studentCorrMatrix,
+                      method = "circle",
+                      nbreaks = 6,
+                      palette = "Spectral")
+  ggsave(pngName1)
+  
+  pngName2<-paste(dStem,"cgram2.png",sep="")
+  ggcorrplot(studentCorrMatrix, hc.order = TRUE, type = "lower",
+             outline.col = "white",
+             ggtheme = ggplot2::theme_gray,
+             colors = c("#6D9EC1", "white", "#E46726"))
+  ggsave(pngName2)
+  
+  
 }
 
 doEvtIrrCsv<-function(lst,dStem)
@@ -321,7 +328,6 @@ doCriterionViolins<-function(sheetDF,graphsToPlot,dStem)
   plt<-ggplot(data=x,aes(x=variable,y=value))
   plt+geom_violin()+ theme_minimal() + labs(x="Criteria",y="x")
   ggsave(pngName)
-  dev.off()
 }
 
 doHeatMap<-function(sheetDF,graphsToPlot,dStem)
