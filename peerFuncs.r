@@ -18,6 +18,7 @@ library(irr)
 library(ltm)
 library(GGally)
 library(reshape2)
+library(ggcorrplot)
 
 
 tutorStudentSplitSheet<-function(df)
@@ -231,12 +232,17 @@ doCGram<-function(sheetDf,dStem)
 {
   pngName<-paste(dStem,"cgram.png",sep="")
   png(pngName)
-  ggcorr(data = NULL, 
-         cor_matrix = cor(t(data.matrix(sheetDf)), 
-                      use = "pairwise.complete.obs"),
-                      method = "circle",
-                      nbreaks = 6, 
-                      palette = "Spectral")
+  # ggcorr(data = NULL, 
+  #        cor_matrix = cor(t(data.matrix(sheetDf)), 
+  #                     use = "pairwise.complete.obs"),
+  #                     method = "circle",
+  #                     nbreaks = 6, 
+  #                     palette = "Spectral")
+  # 
+  
+  studentCorrMatrix<-cor(t(data.matrix(sheetDf)), 
+                         use = "pairwise.complete.obs")
+  ggcorrplot(studentCorrMatrix, method = "circle")
   dev.off()
 }
 
@@ -315,7 +321,7 @@ doCriterionViolins<-function(sheetDF,graphsToPlot,dStem)
   plt<-ggplot(data=x,aes(x=variable,y=value))
   plt+geom_violin()+ theme_minimal() + labs(x="Criteria",y="x")
   ggsave(pngName)
-  
+  dev.off()
 }
 
 doHeatMap<-function(sheetDF,graphsToPlot,dStem)
