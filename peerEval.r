@@ -164,15 +164,13 @@ print("Completed")
 #outputSheets<-list(tblMarksReport,tblMarkingAuditReport,tblIRRAnalytics)
 
 outputSheets<-list()
-outputSheets[[ "tblMarksReport" ]] <- tblMarksReport
+outputSheets[[ "tblMarxReport" ]] <- tblMarksReport
 outputSheets[[ "tblMarkingAuditReport" ]] <- tblMarkingAuditReport
 outputSheets[[ "tblIRRAnalytics" ]] <- tblIRRAnalytics
 
 
 doTables(outputSheets,excelPath)
 
-mks <- xtable(tblMarksReport)
-print(mks,type="html")
 
 # 
 # View(q)
