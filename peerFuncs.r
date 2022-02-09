@@ -244,10 +244,10 @@ doCGram<-function(sheetDf,dStem)
   ggsave(pngName1)
   
   pngName2<-paste(dStem,"cgram2.png",sep="")
-  ggcorrplot(studentCorrMatrix, hc.order = TRUE, type = "lower",
+  ggcorrplot(studentCorrMatrix,  type = "lower",
              outline.col = "white",
              ggtheme = ggplot2::theme_gray,
-             colors = c("#6D9EC1", "white", "#E46726"))
+             colors = c("#E46726", "white", "#6D9EC1"))
   ggsave(pngName2)
   
   
