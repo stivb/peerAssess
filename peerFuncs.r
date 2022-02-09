@@ -231,8 +231,12 @@ doCGram<-function(sheetDf,dStem)
 {
   pngName<-paste(dStem,"cgram.png",sep="")
   png(pngName)
-  ggcorr(data = NULL, cor_matrix = cor(sheetDf, use = "pairwise.complete.obs"),
-         nbreaks = 6, palette = "Spectral")
+  ggcorr(data = NULL, 
+         cor_matrix = cor(t(data.matrix(sheetDf)), 
+                      use = "pairwise.complete.obs"),
+                      method = "circle",
+                      nbreaks = 6, 
+                      palette = "Spectral")
   dev.off()
 }
 

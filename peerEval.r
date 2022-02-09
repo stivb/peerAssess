@@ -4,7 +4,7 @@ library(readr)
 library(xtable)
 
 
-doTables<-function(tableList,dStem)
+doTblExports<-function(tableList,dStem)
 {
   for (name in names(tableList)) {
     csvPath<-paste(dStem,"/",name,".csv",sep="")
@@ -40,11 +40,11 @@ criteriaShortNames<-sprintf("c%d", 1:nCriteria)
 criteriaLongNames<-sprintf("Criteria%d", 1:nCriteria) 
 
 graphsToPlot<-c(
-   "doSummativeGraph",
-   "doMarkerStacks",
-   "doHeatMaps",
-   "doStacks",
-   "doHists"
+#   "doSummativeGraph",
+#   "doMarkerStacks",
+#   "doHeatMaps",
+#   "doStacks",
+#   "doHists"
   )
 
 
@@ -150,7 +150,7 @@ lapply(mysheets, function(df) {
   doCriterionViolins(df,graphsToPlot,destStem)
   
   
-  #doCGram(df, destStem)
+  doCGram(df, destStem)
   
   #tmpWorkSheetList[["iccNA"]]<-doICCNA(irrDf)
   #print("iccNa")
@@ -183,7 +183,7 @@ outputSheets[[ "tblMarkingAuditReport" ]] <- tblMarkingAuditReport
 outputSheets[[ "tblIRRAnalytics" ]] <- tblIRRAnalytics
 
 
-doTables(outputSheets,excelPath)
+doTblExports(outputSheets,excelPath)
 
 
 # 
