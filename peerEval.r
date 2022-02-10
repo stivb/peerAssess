@@ -42,7 +42,7 @@ criteriaLongNames<-sprintf("Criteria%d", 1:nCriteria)
 graphsToPlot<-c(
 #   "doSummativeGraph",
 #   "doMarkerStacks",
-#   "doHeatMaps",
+    "doHeatMaps"
 #   "doStacks",
 #   "doHists"
   )
@@ -166,9 +166,6 @@ do.call("rbind", workSheetList)
 tblIRRAnalytics<-data.table::rbindlist(workSheetList)
 
 print("Completed")
-
-
-
 
 #View(tblMarksReport)
 ##View(tblMarkingAuditReport)

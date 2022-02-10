@@ -246,6 +246,7 @@ doCGram<-function(sheetDf,dStem)
   pngName2<-paste(dStem,"cgram2.png",sep="")
   ggcorrplot(studentCorrMatrix,  type = "lower",
              outline.col = "white",
+             #insig = "blank",
              ggtheme = ggplot2::theme_gray,
              colors = c("#E46726", "white", "#6D9EC1"))
   ggsave(pngName2)
@@ -335,6 +336,7 @@ doHeatMap<-function(sheetDF,graphsToPlot,dStem)
   if (!('doHeatMaps' %in% graphsToPlot)) return(NULL);
   pngName<-paste(dStem,"_heat.png",sep="")
   names(sheetDF) <- gsub('\\.\\.\\.', "", names(sheetDF))
+  rownames(sheetDF) <- gsub('^(\\d)$', "0\\1", rownames(sheetDF))
   coul <- brewer.pal(6, "Set1")
   coul[6]="white"
   dt2 <- sheetDF %>%
