@@ -4,18 +4,7 @@ library(readr)
 library(xtable)
 
 
-doTblExports<-function(tableList,dStem)
-{
-  for (name in names(tableList)) {
-    csvPath<-paste(dStem,"/",name,".csv",sep="")
-    htmlPath<-paste(dStem,"/",name,".htm",sep="")
-    tbl<-tableList[[name]]
-    tblDf<-apply(tbl,2,as.character)
-    write.csv(tblDf,csvPath)
-    print(xtable(tbl), type = "html",file=htmlPath)
-  }
-  
-}
+
 
 #############BODY###########################
 

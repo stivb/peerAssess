@@ -99,6 +99,19 @@ makeGradeSheet<-function(vAveStudentScores,vAveTutorScores,nCriteria,critProport
   return (as.data.frame(do.call(rbind, gradeSheetList)))
 }
 
+doTblExports<-function(tableList,dStem)
+{
+  for (name in names(tableList)) {
+    csvPath<-paste(dStem,"/",name,".csv",sep="")
+    htmlPath<-paste(dStem,"/",name,".htm",sep="")
+    tbl<-tableList[[name]]
+    tblDf<-apply(tbl,2,as.character)
+    write.csv(tblDf,csvPath)
+    print(xtable(tbl), type = "html",file=htmlPath)
+  }
+  
+}
+
 getColHead<-function(startPos,nCrit,nowPos,ts)
 {
   return(paste(ts, "_crit",(nowPos-startPos)+1,sep=""))
