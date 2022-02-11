@@ -93,6 +93,7 @@ makeGradeSheet<-function(vAveStudentScores,vAveTutorScores,nCriteria,critProport
     
     gradeSheetList[[length(gradeSheetList)+1]] <<- tmpGradeSheetList
     
+    
   }
   
   return (as.data.frame(do.call(rbind, gradeSheetList)))
@@ -361,7 +362,7 @@ doHeatMap<-function(sheetDF,graphsToPlot,dStem)
     geom_tile()  + 
     #scale_fill_manual(values=my.cols(dt2Max))
     scale_fill_manual(breaks = levels(dt2$value),
-     values = coul)
+     values = coul, na.value="white")
   ggsave(pngName)
 }
 

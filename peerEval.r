@@ -103,7 +103,12 @@ lapply(mysheets, function(df) {
     #am thinking the tscomparison analytics is canonical rather than event
     tblTutorStudentCorrReport<-doTSCorrReport(studentAveScores,tutorAveScores,nCriteria)
     
+    write.csv(tblTutorStudentCorrReport,paste(destStem,"tscorr.csv",sep=""))
+    
+  
     tblMarksReport<<-makeGradeSheet(studentAveScores,tutorAveScores,2,criteriaProprotions,tutorStudentProportions)
+    
+    write.csv(apply(tblMarksReport,2,as.character),paste(destStem,"tsmarks.csv",sep=""))
     
     
     
@@ -124,6 +129,8 @@ lapply(mysheets, function(df) {
     }
     
     tblMarkingAuditReport<<-as.data.frame(do.call(rbind, markerAuditList))
+    
+    write.csv(apply(tblMarkingAuditReport,2,as.character),paste(destStem,"+marksaudit.csv",sep=""))
 
     df<-dfStudents
     }
@@ -175,8 +182,8 @@ print("Completed")
 #outputSheets<-list(tblMarksReport,tblMarkingAuditReport,tblIRRAnalytics)
 
 outputSheets<-list()
-outputSheets[[ "tblMarxReport" ]] <- tblMarksReport
-outputSheets[[ "tblMarkingAuditReport" ]] <- tblMarkingAuditReport
+#outputSheets[[ "tblMarxReport" ]] <- tblMarksReport
+#outputSheets[[ "tblMarkingAuditReport" ]] <- tblMarkingAuditReport
 outputSheets[[ "tblIRRAnalytics" ]] <- tblIRRAnalytics
 
 
