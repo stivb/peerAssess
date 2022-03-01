@@ -1,3 +1,11 @@
+# a file for parsing polleverywhere composite imported csvs 
+# (obtained from excels: get data->from file->from folder->combine and load)
+# then sort by the user folder - delete any row not containing a named user 
+# - then save as .csv in order to be imported by this script
+# make sure all options clickable by a student begin with the numerical value
+# of that option
+
+
 library(readr)
 library(tidyverse)
 rba <- read_csv("pollev/results_by_activity.csv")
