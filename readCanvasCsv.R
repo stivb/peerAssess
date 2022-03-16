@@ -31,6 +31,14 @@ df4<-df4 %>% select(-(section:attempt))
 df4<-df4[,1:(ncol(df4)-3)]
 df4<-df4[,c("name","id","sis_id","Site1","Scores1","Fbk1","Site2","Scores2","Fbk2","Site3","Scores3","Fbk3")]
 
+mksAudit<-df4
+mksAudit<-separate(mksAudit,col=Scores1,into=c("TechAccuracy1", "VizDesign1", "SiteAmbition1"),sep="\\,")
+mksAudit<-separate(mksAudit,col=Scores2,into=c("TechAccuracy2", "VizDesign2", "SiteAmbition2"),sep="\\,")
+mksAudit<-separate(mksAudit,col=Scores3,into=c("TechAccuracy3", "VizDesign3", "SiteAmbition3"),sep="\\,")
+
+write.csv(mksAudit,file=paste0(csvPath,"/mksAudit.csv"))
+
+
 dfz<-melt(setDT(df4), id = 1L, 
       measure = list(c(4,7,10), c(5,8,11), c(6,9,12)), 
       value.name = c("Site", "Scores", "Feedback"))
