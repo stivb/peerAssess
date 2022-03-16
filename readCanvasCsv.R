@@ -50,4 +50,15 @@ dfxfbk<-dfx[,c("name","Site","Feedback")]
 groupdFbk <- dfxfbk %>% select(name, Site, Feedback) %>%  group_by(Site) %>%  mutate(all_feedback = paste(Feedback, collapse = "\n\n"))
 groupdFbk<-groupdFbk[,c("Site","all_feedback")]
 groupdFbk<-groupdFbk[!duplicated(groupdFbk),]
+
+
+dfx$TechAccuracy<-as.numeric(dfx$TechAccuracy)
+dfx$VizDesign<-as.numeric(dfx$VizDesign)
+dfx$SiteAmbition<-as.numeric(dfx$SiteAmbition)
+
+scoredAvged<-aggregate(cbind(TechAccuracy,VizDesign,SiteAmbition) ~ Site, data = dfx, FUN = mean, na.rm = TRUE)
+m<-merge(groupdFbk,scoredAvged,by="Site")
+
 write.csv(groupdFbk,file="fbk4.csv")
+
+
