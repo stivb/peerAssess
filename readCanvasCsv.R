@@ -65,10 +65,10 @@ m<-merge(m,nReviewers,by="Site")
 Reviewers <- dfx %>%
    select(name, Site) %>% 
    group_by(Site) %>%
-   mutate(all_names = paste(name, collapse = " | "))
+   mutate(all_reviewers = paste(name, collapse = " | "))
 
 Reviewers<-Reviewers[,-1]
-Reviewers<-Reviewers[!duplicated(groupdFbk),]
+Reviewers<-Reviewers[!duplicated(Reviewers),]
 m<-merge(m,Reviewers,by="Site")
 
 write.csv(m,file=paste0(csvPath,"/byartefact.csv"))
