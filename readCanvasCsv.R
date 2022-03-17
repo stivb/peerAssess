@@ -57,8 +57,20 @@ dfx$VizDesign<-as.numeric(dfx$VizDesign)
 dfx$SiteAmbition<-as.numeric(dfx$SiteAmbition)
 
 scoredAvged<-aggregate(cbind(TechAccuracy,VizDesign,SiteAmbition) ~ Site, data = dfx, FUN = mean, na.rm = TRUE)
+nReviewers<- aggregate(data = dfx,name ~ Site,function(x) length(unique(x)))
+names(nReviewers)[2]<-"nReviews"
 m<-merge(groupdFbk,scoredAvged,by="Site")
+m<-merge(m,nReviewers,by="Site")
 
-write.csv(groupdFbk,file="fbk4.csv")
+Reviewers <- dfx %>%
+   select(name, Site) %>% 
+   group_by(Site) %>%
+   mutate(all_names = paste(name, collapse = " | "))
+
+Reviewers<-Reviewers[,-1]
+Reviewers<-Reviewers[!duplicated(groupdFbk),]
+m<-merge(m,Reviewers,by="Site")
+
+write.csv(m,file=paste0(csvPath,"/byartefact.csv"))
 
 
