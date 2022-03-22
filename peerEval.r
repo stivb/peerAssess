@@ -95,7 +95,7 @@ lapply(mysheets, function(df) {
     write.csv(tblTutorStudentCorrReport,paste(destStem,"tscorr.csv",sep=""))
     
   
-    tblMarksReport<<-makeGradeSheet(studentAveScores,tutorAveScores,2,criteriaProprotions,tutorStudentProportions)
+    tblMarksReport<<-makeGradeSheet(studentAveScores,tutorAveScores,3,criteriaProprotions,tutorStudentProportions)
     
     write.csv(apply(tblMarksReport,2,as.character),paste(destStem,"tsmarks.csv",sep=""))
     
